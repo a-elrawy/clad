@@ -249,7 +249,6 @@ CUDA_HOST_DEVICE void imaxabs_pullback(T x, U d_y, T* d_x) {
   abs_pullback(x, d_y, d_x);
 }
 
-
 // 1.2 fabs, fabsf, fabsl
 template <typename T, typename dT>
 CUDA_HOST_DEVICE ValueAndPushforward<T, dT> fabs_pushforward(T x, dT d_x) {
@@ -286,7 +285,7 @@ CUDA_HOST_DEVICE void fabsl_pullback(T x, U d_y, T* d_x) {
 // 1.3 fmod, fmodf, fmodl
 template <typename T, typename dT>
 CUDA_HOST_DEVICE ValueAndPushforward<T, dT> fmod_pushforward(T x, T y, dT d_x,
-                                                            dT d_y) {
+                                                             dT d_y) {
   return {::std::fmod(x, y), d_x - d_y * ::std::floor(x / y)};
 }
 
@@ -299,13 +298,13 @@ CUDA_HOST_DEVICE void fmod_pullback(T x, T y, U d_z, T* d_x, T* d_y) {
 // pushforward for fmodf, fmodl
 template <typename T, typename dT>
 CUDA_HOST_DEVICE ValueAndPushforward<T, dT> fmodf_pushforward(T x, T y, dT d_x,
-                                                             dT d_y) {
+                                                              dT d_y) {
   return fmod_pushforward(x, y, d_x, d_y);
 }
 
 template <typename T, typename dT>
 CUDA_HOST_DEVICE ValueAndPushforward<T, dT> fmodl_pushforward(T x, T y, dT d_x,
-                                                             dT d_y) {
+                                                              dT d_y) {
   return fmod_pushforward(x, y, d_x, d_y);
 }
 
@@ -322,8 +321,8 @@ CUDA_HOST_DEVICE void fmodl_pullback(T x, T y, U d_z, T* d_x, T* d_y) {
 
 // 1.4 remainder, remainderf, remainderl
 template <typename T, typename dT>
-CUDA_HOST_DEVICE ValueAndPushforward<T, dT> remainder_pushforward(T x, T y,
-                                                                 dT d_x, dT d_y) {
+CUDA_HOST_DEVICE ValueAndPushforward<T, dT>
+remainder_pushforward(T x, T y, dT d_x, dT d_y) {
   return {::std::remainder(x, y), d_x - d_y * ::std::floor(x / y)};
 }
 
@@ -335,16 +334,14 @@ CUDA_HOST_DEVICE void remainder_pullback(T x, T y, U d_z, T* d_x, T* d_y) {
 
 // pushforward for remainderf, remainderl
 template <typename T, typename dT>
-CUDA_HOST_DEVICE ValueAndPushforward<T, dT> remainderf_pushforward(T x, T y,
-                                                                  dT d_x,
-                                                                  dT d_y) {
+CUDA_HOST_DEVICE ValueAndPushforward<T, dT>
+remainderf_pushforward(T x, T y, dT d_x, dT d_y) {
   return remainder_pushforward(x, y, d_x, d_y);
 }
 
 template <typename T, typename dT>
-CUDA_HOST_DEVICE ValueAndPushforward<T, dT> remainderl_pushforward(T x, T y,
-                                                                  dT d_x,
-                                                                  dT d_y) {
+CUDA_HOST_DEVICE ValueAndPushforward<T, dT>
+remainderl_pushforward(T x, T y, dT d_x, dT d_y) {
   return remainder_pushforward(x, y, d_x, d_y);
 }
 
@@ -382,28 +379,27 @@ CUDA_HOST_DEVICE void fma_pullback(T1 a, T2 b, T3 c, T4 d_y, T1* d_a, T2* d_b,
 
 // pushforward for fmaf, fmal
 template <typename T, typename dT>
-CUDA_HOST_DEVICE ValueAndPushforward<T, dT> fmaf_pushforward(T x, T y, T z,
-                                                             dT d_x, dT d_y,
-                                                             dT d_z) {
+CUDA_HOST_DEVICE ValueAndPushforward<T, dT>
+fmaf_pushforward(T x, T y, T z, dT d_x, dT d_y, dT d_z) {
   return fma_pushforward(x, y, z, d_x, d_y, d_z);
 }
 
 template <typename T, typename dT>
-CUDA_HOST_DEVICE ValueAndPushforward<T, dT> fmal_pushforward(T x, T y, T z, dT d_x,
-  dT d_y, dT d_z) {
+CUDA_HOST_DEVICE ValueAndPushforward<T, dT>
+fmal_pushforward(T x, T y, T z, dT d_x, dT d_y, dT d_z) {
   return fma_pushforward(x, y, z, d_x, d_y, d_z);
 }
 
 // pullback for fmaf, fmal
 template <typename T, typename U>
 CUDA_HOST_DEVICE void fmaf_pullback(T x, T y, T z, U d_w, T* d_x, T* d_y,
-                                   T* d_z) {
+                                    T* d_z) {
   fma_pullback(x, y, z, d_w, d_x, d_y, d_z);
 }
 
 template <typename T, typename U>
 CUDA_HOST_DEVICE void fmal_pullback(T x, T y, T z, U d_w, T* d_x, T* d_y,
-                                   T* d_z) {
+                                    T* d_z) {
   fma_pullback(x, y, z, d_w, d_x, d_y, d_z);
 }
 
@@ -424,14 +420,14 @@ CUDA_HOST_DEVICE void fmax_pullback(T x, T y, U d_z, T* d_x, T* d_y) {
 
 // pushforward for fmaxf, fmaxl
 template <typename T, typename dT>
-CUDA_HOST_DEVICE ValueAndPushforward<T, dT> fmaxf_pushforward(T x, T y,
-                                                              dT d_x, dT d_y) {
+CUDA_HOST_DEVICE ValueAndPushforward<T, dT> fmaxf_pushforward(T x, T y, dT d_x,
+                                                              dT d_y) {
   return fmax_pushforward(x, y, d_x, d_y);
 }
 
 template <typename T, typename dT>
-CUDA_HOST_DEVICE ValueAndPushforward<T, dT> fmaxl_pushforward(T x, T y,
-  dT d_x, dT d_y) {
+CUDA_HOST_DEVICE ValueAndPushforward<T, dT> fmaxl_pushforward(T x, T y, dT d_x,
+                                                              dT d_y) {
   return fmax_pushforward(x, y, d_x, d_y);
 }
 
@@ -463,14 +459,14 @@ CUDA_HOST_DEVICE void fmin_pullback(T x, T y, U d_z, T* d_x, T* d_y) {
 
 // pushforward for fminf, fminl
 template <typename T, typename dT>
-CUDA_HOST_DEVICE ValueAndPushforward<T, dT> fminf_pushforward(T x, T y,
-                                                              dT d_x, dT d_y) {
+CUDA_HOST_DEVICE ValueAndPushforward<T, dT> fminf_pushforward(T x, T y, dT d_x,
+                                                              dT d_y) {
   return fmin_pushforward(x, y, d_x, d_y);
 }
 
 template <typename T, typename dT>
-CUDA_HOST_DEVICE ValueAndPushforward<T, dT> fminl_pushforward(T x, T y,
-  dT d_x, dT d_y) {
+CUDA_HOST_DEVICE ValueAndPushforward<T, dT> fminl_pushforward(T x, T y, dT d_x,
+                                                              dT d_y) {
   return fmin_pushforward(x, y, d_x, d_y);
 }
 
@@ -500,14 +496,14 @@ CUDA_HOST_DEVICE void fdim_pullback(T x, T y, U d_z, T* d_x, T* d_y) {
 
 // pushforward for fdimf, fdiml
 template <typename T, typename dT>
-CUDA_HOST_DEVICE ValueAndPushforward<T, dT> fdimf_pushforward(T x, T y,
-                                                              dT d_x, dT d_y) {
+CUDA_HOST_DEVICE ValueAndPushforward<T, dT> fdimf_pushforward(T x, T y, dT d_x,
+                                                              dT d_y) {
   return fdim_pushforward(x, y, d_x, d_y);
 }
 
 template <typename T, typename dT>
-CUDA_HOST_DEVICE ValueAndPushforward<T, dT> fdiml_pushforward(T x, T y,
-  dT d_x, dT d_y) {
+CUDA_HOST_DEVICE ValueAndPushforward<T, dT> fdiml_pushforward(T x, T y, dT d_x,
+                                                              dT d_y) {
   return fdim_pushforward(x, y, d_x, d_y);
 }
 
@@ -675,7 +671,6 @@ CUDA_HOST_DEVICE ValueAndPushforward<T, dT> log10f_pushforward(T x, dT d_x) {
   return log10_pushforward(x, d_x);
 }
 
-
 template <typename T, typename dT>
 CUDA_HOST_DEVICE ValueAndPushforward<T, dT> log10l_pushforward(T x, dT d_x) {
   return log10_pushforward(x, d_x);
@@ -756,7 +751,6 @@ template <typename T, typename U>
 CUDA_HOST_DEVICE void log1pl_pullback(T x, U d_y, T* d_x) {
   log1p_pullback(x, d_y, d_x);
 }
-
 
 template <typename T, typename dT>
 CUDA_HOST_DEVICE ValueAndPushforward<T, dT> sin_pushforward(T x, dT d_x) {
@@ -1005,101 +999,100 @@ CUDA_HOST_DEVICE inline void sqrtf_pullback(float a, float d_y, float* d_a) {
 // These are required because C variants of mathematical functions are
 // defined in global namespace.
 // 1. Basic Math Functions
-using std::abs_pushforward;
 using std::abs_pullback;
-using std::llabs_pushforward;
-using std::llabs_pullback;
-using std::imaxabs_pushforward;
-using std::imaxabs_pullback;
-using std::fabs_pushforward;
+using std::abs_pushforward;
 using std::fabs_pullback;
-using std::fabsf_pushforward;
+using std::fabs_pushforward;
 using std::fabsf_pullback;
-using std::fabsl_pushforward;
+using std::fabsf_pushforward;
 using std::fabsl_pullback;
-using std::fmod_pushforward;
-using std::fmod_pullback;
-using std::fmodf_pushforward;
-using std::fmodf_pullback;
-using std::fmodl_pushforward;
-using std::fmodl_pullback;
-using std::remainder_pushforward;
-using std::remainder_pullback;
-using std::remainderf_pushforward;
-using std::remainderf_pullback;
-using std::remainderl_pushforward;
-using std::remainderl_pullback;
-using std::fma_pushforward;
-using std::fma_pullback;
-using std::fmaf_pushforward;
-using std::fmaf_pullback;
-using std::fmal_pushforward;
-using std::fmal_pullback;
-using std::fmax_pushforward;
-using std::fmax_pullback;
-using std::fmaxf_pushforward;
-using std::fmaxf_pullback;
-using std::fmaxl_pushforward;
-using std::fmaxl_pullback;
-using std::fmin_pushforward;
-using std::fmin_pullback;
-using std::fminf_pushforward;
-using std::fminf_pullback;
-using std::fminl_pushforward;
-using std::fminl_pullback;
-using std::fdim_pushforward;
+using std::fabsl_pushforward;
 using std::fdim_pullback;
-using std::fdimf_pushforward;
+using std::fdim_pushforward;
 using std::fdimf_pullback;
-using std::fdiml_pushforward;
+using std::fdimf_pushforward;
 using std::fdiml_pullback;
+using std::fdiml_pushforward;
+using std::fma_pullback;
+using std::fma_pushforward;
+using std::fmaf_pullback;
+using std::fmaf_pushforward;
+using std::fmal_pullback;
+using std::fmal_pushforward;
+using std::fmax_pullback;
+using std::fmax_pushforward;
+using std::fmaxf_pullback;
+using std::fmaxf_pushforward;
+using std::fmaxl_pullback;
+using std::fmaxl_pushforward;
+using std::fmin_pullback;
+using std::fmin_pushforward;
+using std::fminf_pullback;
+using std::fminf_pushforward;
+using std::fminl_pullback;
+using std::fminl_pushforward;
+using std::fmod_pullback;
+using std::fmod_pushforward;
+using std::fmodf_pullback;
+using std::fmodf_pushforward;
+using std::fmodl_pullback;
+using std::fmodl_pushforward;
+using std::imaxabs_pullback;
+using std::imaxabs_pushforward;
+using std::llabs_pullback;
+using std::llabs_pushforward;
+using std::remainder_pullback;
+using std::remainder_pushforward;
+using std::remainderf_pullback;
+using std::remainderf_pushforward;
+using std::remainderl_pullback;
+using std::remainderl_pushforward;
 
 // 2. Exponential Functions
-using std::exp_pushforward;
-using std::exp_pullback;
-using std::expf_pushforward;
-using std::expf_pullback;
-using std::expl_pushforward;
-using std::expl_pullback;
-using std::exp2_pushforward;
 using std::exp2_pullback;
-using std::exp2f_pushforward;
+using std::exp2_pushforward;
 using std::exp2f_pullback;
-using std::exp2l_pushforward;
+using std::exp2f_pushforward;
 using std::exp2l_pullback;
-using std::expm1_pushforward;
+using std::exp2l_pushforward;
+using std::exp_pullback;
+using std::exp_pushforward;
+using std::expf_pullback;
+using std::expf_pushforward;
+using std::expl_pullback;
+using std::expl_pushforward;
 using std::expm1_pullback;
-using std::expm1f_pushforward;
+using std::expm1_pushforward;
 using std::expm1f_pullback;
-using std::expm1l_pushforward;
+using std::expm1f_pushforward;
 using std::expm1l_pullback;
+using std::expm1l_pushforward;
 
 // 3. Logarithmic Functions
-using std::log_pushforward;
-using std::log_pullback;
-using std::logf_pushforward;
-using std::logf_pullback;
-using std::logl_pushforward;
-using std::logl_pullback;
-using std::log10_pushforward;
 using std::log10_pullback;
-using std::log10f_pushforward;
+using std::log10_pushforward;
 using std::log10f_pullback;
-using std::log10l_pushforward;
+using std::log10f_pushforward;
 using std::log10l_pullback;
-using std::log2_pushforward;
-using std::log2_pullback;
-using std::log2f_pushforward;
-using std::log2f_pullback;
-using std::log2l_pushforward;
-using std::log2l_pullback;
-using std::log1p_pushforward;
+using std::log10l_pushforward;
 using std::log1p_pullback;
-using std::log1pf_pushforward;
+using std::log1p_pushforward;
 using std::log1pf_pullback;
-using std::log1pl_pushforward;
+using std::log1pf_pushforward;
 using std::log1pl_pullback;
-
+using std::log1pl_pushforward;
+using std::log2_pullback;
+using std::log2_pushforward;
+using std::log2f_pullback;
+using std::log2f_pushforward;
+using std::log2l_pullback;
+using std::log2l_pushforward;
+using std::log_pullback;
+using std::log_pushforward;
+using std::logf_pullback;
+using std::logf_pushforward;
+using std::logl_pullback;
+using std::logl_pushforward;
 
 using std::acos_pushforward;
 using std::asin_pullback;
