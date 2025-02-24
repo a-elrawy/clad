@@ -387,7 +387,7 @@ double f_hypot(double x, double y) { return std::hypot(x, y); }
 // CHECK-NEXT:     return _t0.pushforward;
 // CHECK-NEXT: }
 
-double f_fmodf(double x, double y) { return std::fmodf(x, y); }
+double f_fmodf(double x, double y) { return ::fmodf(x, y); }
 // CHECK: double f_fmodf_darg0(double x, double y) {
 // CHECK-NEXT:     double _d_x = 1;
 // CHECK-NEXT:     double _d_y = 0;
