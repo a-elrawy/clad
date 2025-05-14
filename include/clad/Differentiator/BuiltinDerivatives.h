@@ -1305,6 +1305,9 @@ pow_pushforward(T1 x, T2 exponent, dT1 d_x, dT2 d_exponent) {
   // = NaN.
   if (d_exponent)
     derivative += (::std::pow(x, exponent) * ::std::log(x)) * d_exponent;
+  else
+    if (exponent == static_cast<T2>(0))
+      derivative = static_cast<dT_out>(0);
   return {val, derivative};
 }
 
@@ -1312,7 +1315,12 @@ template <typename T1, typename T2, typename T3>
 CUDA_HOST_DEVICE void pow_pullback(T1 x, T2 exponent, T3 d_y, T1* d_x,
                                    T2* d_exponent) {
   auto t = pow_pushforward(x, exponent, static_cast<T1>(1), static_cast<T2>(0));
-  *d_x += t.pushforward * d_y;
+  if (exponent == static_cast<T2>(0)) {
+    *d_x += static_cast<T1>(0);
+  } else {
+    *d_x += t.pushforward * d_y;
+  }
+  
   t = pow_pushforward(x, exponent, static_cast<T1>(0), static_cast<T2>(1));
   *d_exponent += t.pushforward * d_y;
 }

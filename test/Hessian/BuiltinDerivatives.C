@@ -439,6 +439,8 @@ int main() {
 // CHECK-NEXT:     float _t1;
 // CHECK-NEXT:     float _t2;
 // CHECK-NEXT:     float _t3;
+// CHECK-NEXT:     bool _cond1;
+// CHECK-NEXT:     float _t4;
 // CHECK-NEXT:     float _d_val = 0.F;
 // CHECK-NEXT:     float val = ::std::pow(x, exponent);
 // CHECK-NEXT:     float _t0 = ::std::pow(x, exponent - 1);
@@ -451,6 +453,12 @@ int main() {
 // CHECK-NEXT:         _t3 = ::std::pow(x, exponent);
 // CHECK-NEXT:         _t2 = ::std::log(x);
 // CHECK-NEXT:         derivative += (_t3 * _t2) * d_exponent;
+// CHECK-NEXT:     } else {
+// CHECK-NEXT:     _cond1 = exponent == static_cast<float>(0);
+// CHECK-NEXT:     if (_cond1) {
+// CHECK-NEXT:         _t4 = derivative;
+// CHECK-NEXT:         derivative = static_cast<float>(0);
+// CHECK-NEXT:     }
 // CHECK-NEXT:     }
 // CHECK-NEXT:     }
 // CHECK-NEXT:     {
@@ -469,6 +477,10 @@ int main() {
 // CHECK-NEXT:         _r6 += _t3 * _r_d0 * d_exponent * clad::custom_derivatives::std::log_pushforward(x, 1.F).pushforward;
 // CHECK-NEXT:         *_d_x += _r6;
 // CHECK-NEXT:         *_d_d_exponent += (_t3 * _t2) * _r_d0;
+// CHECK-NEXT:         } else if (_cond1) {
+// CHECK-NEXT:         derivative = _t4;
+// CHECK-NEXT:         float _r_d1 = _d_derivative;
+// CHECK-NEXT:         _d_derivative = 0.F;
 // CHECK-NEXT:     }
 // CHECK-NEXT:     {
 // CHECK-NEXT:         *_d_exponent += _d_derivative * d_x * _t0;
