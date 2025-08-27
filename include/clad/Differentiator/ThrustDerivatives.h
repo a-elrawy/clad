@@ -11,9 +11,33 @@
 #include <thrust/reduce.h>
 #include <thrust/transform.h>
 #include <thrust/tuple.h>
+#include <thrust/fill.h>
 #include <type_traits>
 
 namespace clad::custom_derivatives::thrust {
+
+template <typename Iterator, typename T>
+void fill_pullback(Iterator first, Iterator last, const T &value,
+                   Iterator *d_first, Iterator *d_last,
+                   T *d_value) {
+  size_t n = ::thrust::distance(first, last);
+
+  if (n == 0)
+    return;
+
+  auto d_first_const_ptr = ::thrust::raw_pointer_cast((*d_first).base());
+  auto d_first_ptr = const_cast<T *>(d_first_const_ptr);
+  ::thrust::device_ptr<T> d_first_dev_ptr(d_first_ptr);
+
+  if (d_value) {
+    T sum_of_gradients =
+        ::thrust::reduce(d_first_dev_ptr, d_first_dev_ptr + n, (T)0,
+                         ::thrust::plus<T>());
+    *d_value += sum_of_gradients;
+  }
+
+  ::thrust::fill(d_first_dev_ptr, d_first_dev_ptr + n, (T)0);
+}
 
 template <typename Iterator, typename T, typename BinaryOp>
 void reduce_pullback(Iterator first, Iterator last, T init, BinaryOp op,
