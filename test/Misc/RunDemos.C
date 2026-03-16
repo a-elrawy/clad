@@ -4,6 +4,9 @@
 // RUN: %cladclang %S/../../demos/DebuggingClad.cpp -I%S/../../include 2>&1
 // RUN: %cladclang %S/../../demos/RosenbrockFunction.cpp -I%S/../../include 2>&1
 // RUN: %cladclang %S/../../demos/ComputerGraphics/smallpt/SmallPT.cpp -I%S/../../include 2>&1
+// RUN: %cladclang %S/../../demos/ComputerGraphics/smallpt/SmallPT_DiffGeom.cpp -I%S/../../include -oSmallPT_DiffGeom.out 2>&1
+// RUN: ./SmallPT_DiffGeom.out | FileCheck -check-prefix CHECK_SMALLPT_DIFFGEOM %s
+// CHECK_SMALLPT_DIFFGEOM: Converged
 
 //-----------------------------------------------------------------------------/
 //  Demo: Gradient.cpp
