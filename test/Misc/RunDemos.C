@@ -6,6 +6,14 @@
 // RUN: %cladclang %S/../../demos/ComputerGraphics/smallpt/SmallPT.cpp -I%S/../../include 2>&1
 
 //-----------------------------------------------------------------------------/
+// Demo: SmallPT differentiable path tracer
+//-----------------------------------------------------------------------------/
+// RUN: %cladclang %S/../../demos/ComputerGraphics/smallpt/SmallPTDiff.cpp -I%S/../../include -I%S/../../demos/ComputerGraphics/smallpt 2>&1
+// RUN: %cladclang %S/../../test/Gradient/SmallPTDiff.C -I%S/../../include -I%S/../../demos/ComputerGraphics/smallpt -oSmallPTDiff.out 2>&1
+// RUN: ./SmallPTDiff.out | FileCheck -check-prefix CHECK_SMALLPT_DIFF %s
+// CHECK_SMALLPT_DIFF: SMALLPT_DIFF_PASS=1
+
+//-----------------------------------------------------------------------------/
 //  Demo: Gradient.cpp
 //-----------------------------------------------------------------------------/
 
